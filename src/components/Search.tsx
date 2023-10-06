@@ -138,23 +138,20 @@ const ErrorMessage = styled.div`
 
 const Search = () => {
 	const { city, search } = useLoaderData() as SearchData;
-
-	const [selectedCity, setSelectedCity] = useState<string>('');
-	const [selectedSearch, setSelectedSearch] = useState<string>('0');
 	const [errorMessage, setErrorMessage] = useState('');
+	const cityElement = document.getElementById('city') as HTMLSelectElement;
+	const searchElement = document.getElementById('search') as HTMLSelectElement;
 
 	useEffect(() => {
-		const cityElement = document.getElementById('city') as HTMLSelectElement;
-		const searchElement = document.getElementById('search') as HTMLSelectElement;
-
 		if (cityElement && searchElement) {
-			cityElement.value = selectedCity;
-			searchElement.value = selectedSearch;
+			cityElement.value = city || "";
+			searchElement.value = search || "0";
 		}
-	}, [selectedCity, selectedSearch]);
+	}, [city, search]);
 
 	const handleSubmit = () => {
-		if (selectedCity === '') {
+		const cityElement = document.getElementById('city') as HTMLSelectElement;
+		if (cityElement.value === '') {
 			setErrorMessage('Sélectionnez un élement dans la liste.')
 			setTimeout(() => {
 				setErrorMessage('');
@@ -174,7 +171,7 @@ const Search = () => {
 						<Left>
 							<SearchBar>
 								<Label>Pour qui ?</Label>
-								<Select id="search" name="search" defaultValue={search} onChange={(e) => setSelectedSearch(e.target.value)}>
+								<Select id="search" name="search" defaultValue={search}>
 									<option value="0">Sélectionnez...</option>
 									<option>Parents</option>
 									<option>Lycéens et étudiants</option>
@@ -191,7 +188,7 @@ const Search = () => {
 						</Left>
 						<Right>
 							<SearchBar>
-								<Select id="city" name="city" defaultValue={city} onChange={(e) => setSelectedCity(e.target.value)}>
+								<Select id="city" name="city" defaultValue={city || ""}>
 									<option value="">Sélectionnez une ville...</option>
 									<option>Paris</option>
 									<option>Toulouse</option>
